@@ -1,5 +1,37 @@
-*.class
-*.log
+# Play Framework & SBT
+target/
+project/project/
+project/target/
+dist/
+tmp/
+logs/
+RUNNING_PID
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Giter8 template cache
+/.g8
+
+# Build Server Protocol (BSP)
+/.bsp
+
+# IDE-specific files
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+
+# Metals & Bloop (for Scala development)
+/.bloop/
+/.metals/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# PostgreSQL dump files
+*.sql
+*.dump
+
+# Secrets
+.env
+*.conf
