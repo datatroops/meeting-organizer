@@ -1,0 +1,83 @@
+@(userId:Long)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meeting Notifications</title>
+    <script type="text/javascript">
+        const userId = @userId;
+        const socket = new WebSocket(`ws://${window.location.host}/ws/${userId}`);
+
+        socket.onopen = function(event) {
+            document.getElementById('status').textContent = 'Connected';
+            document.getElementById('status').className = 'connected';
+        };
+
+        socket.onmessage = function(event) {
+            const notification = JSON.parse(event.data);
+            const notificationList = document.getElementById('notifications');
+            const item = document.createElement('li');
+
+            // Format based on notification type
+            let message = '';
+            switch(notification.type) {
+                case "MEETING_CREATED":
+                    message = `Meeting created: ${notification.meeting.title}`;
+                    break;
+                case "MEETING_UPDATED":
+                    message = `Meeting updated: ${notification.meeting.title}`;
+                    break;
+                case "MEETING_DELETED":
+                    message = `Meeting deleted: ${notification.meeting.title}`;
+                    break;
+                default:
+                    message = `Notification received: ${JSON.stringify(notification)}`;
+            }
+
+            item.textContent = message;
+            notificationList.appendChild(item);
+        };
+
+        socket.onerror = function(error) {
+            document.getElementById('status').textContent = 'Error';
+            document.getElementById('status').className = 'error';
+            console.error('WebSocket error:', error);
+        };
+
+        socket.onclose = function(event) {
+            document.getElementById('status').textContent = 'Disconnected';
+            document.getElementById('status').className = 'disconnected';
+
+            // Try to reconnect after 5 seconds
+            setTimeout(function() {
+                window.location.reload();
+            }, 5000);
+        };
+    </script>
+    <style>
+        .connected { color: green; }
+        .disconnected { color: orange; }
+        .error { color: red; }
+        #notifications {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        #notifications li {
+            margin-bottom: 5px;
+            padding: 5px;
+            background-color: #f9f9f9;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<h1>Meeting Notifications for User #@userId</h1>
+<p>WebSocket Status: <span id="status">Connecting...</span></p>
+<h2>Notifications:</h2>
+<ul id="notifications"></ul>
+</body>
+</html>

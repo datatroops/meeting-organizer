@@ -1,0 +1,28 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/latest/ScalaRouting
+# ~~~~
+
+# Home page
+GET     /                           controllers.HomeController.index()
+
+# Static resources
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+# User API
+GET     /users                      controllers.UserController.list()
+GET     /users/:id                  controllers.UserController.get(id: Long)
+POST    /users                      controllers.UserController.create()
+PUT     /users/:id                  controllers.UserController.update(id: Long)
+DELETE  /users/:id                  controllers.UserController.delete(id: Long)
+
+# Meeting API
+GET     /meetings                   controllers.MeetingController.list()
+GET     /meetings/:id               controllers.MeetingController.get(id: Long)
+POST    /meetings                   controllers.MeetingController.create()
+PUT     /meetings/:id               controllers.MeetingController.update(id: Long)
+DELETE  /meetings/:id               controllers.MeetingController.delete(id: Long)
+
+# WebSocket routes
+GET     /websocket/:userId          controllers.WebSocketController.socket(userId: Long)
+GET     /ws/:userId                 controllers.WebSocketController.ws(userId: Long)

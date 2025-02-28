@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  tournament-service-db:
+    image: postgres:latest
+    container_name: meeting_scheduler
+    environment:
+      POSTGRES_DB: meetings_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: newpassword
+    ports:
+      - "5432:5432"
+
